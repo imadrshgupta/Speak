@@ -122,8 +122,8 @@ class AuthService {
 
     async changePassword(
         userId: string,
-        currentPassword: string,
-        newPassword: string
+        currentPassword: string | number,
+        newPassword: string | number
     ) {
         const user = await User.findByPk(userId);
         if (!user) {
@@ -138,14 +138,14 @@ class AuthService {
         );
         if (!isPasswordCorrect) {
             throw new AppError(
-                "New password cannot be same as current password",
+                "Invalid current password",
                 HTTP_STATUS.BAD_REQUEST
             )
         }
 
-        if (currentPassword === newPassword) {
+        if (String(currentPassword) === String(newPassword)) {
             throw new AppError(
-                "New password cannot be same as current passwor",
+                "New password cannot be same as current password",
                 HTTP_STATUS.BAD_REQUEST
             );
         }
@@ -250,7 +250,7 @@ class AuthService {
 
     async resetPassword(
         token: string,
-        password: string
+        password: string | number
     ) {
 
         const resetRecord =

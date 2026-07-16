@@ -4,8 +4,6 @@ import {
 } from "sequelize";
 
 import { sequelize } from "../config/database";
-import  User from "./user.model";
-
 class SpeakingSession extends Model { }
 
 SpeakingSession.init(
@@ -53,7 +51,7 @@ SpeakingSession.init(
 
 
 (SpeakingSession as any).associate = (models: any) => {
-    SpeakingSession.belongsTo(models.User, { foreignKey: "user_id", as: "user"});
+    SpeakingSession.belongsTo(models.User, { foreignKey: "user_id", as: "user" });
 };
 
 export default SpeakingSession;

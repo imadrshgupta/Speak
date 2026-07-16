@@ -27,10 +27,10 @@ class SpeakingController {
                 req.user!.id,
                 body
             );
-             
+
             return successResponse(
                 res, " Speaking session created successfully",
-                data,HTTP_STATUS.CREATED
+                data, HTTP_STATUS.CREATED
             );
 
         } catch (error) {
@@ -42,13 +42,46 @@ class SpeakingController {
         req: Request,
         res: Response,
         next: NextFunction,
-    ) { }
+    ) {
+        try {
+            const data = await SpeakingService.getHistory(req.user!.id);
+            return successResponse(
+                res,
+                "Speaking history fetched successfully",
+                data,
+                HTTP_STATUS.OK
+            )
+        } catch (error) {
+            next(error);
+        }
+    }
 
     async details(
         req: Request,
         res: Response,
         next: NextFunction,
-    ) { }
+    ) {
+        try {
+            const data = await SpeakingService.getSessionById(req.user!.id, req.params.id as string);
+            return successResponse(res, "session fetched successfully", data, HTTP_STATUS.OK);
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async delete(
+        req: Request,
+        res: Response,
+        next: NextFunction,
+    ) {
+        try {
+            const data = await SpeakingService.deleteSession(req.user!.id, req.params.id as string);
+            return successResponse(res, "session fetched successfully", data, HTTP_STATUS.OK);
+
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 export default new SpeakingController();
